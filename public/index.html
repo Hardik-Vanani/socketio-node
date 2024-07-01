@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chat Application</title>
+        <style>
+            #btn {
+                background-color: rgb(56, 56, 56);
+                border: none;
+                height: 35px;
+                width: 120px;
+                border-radius: 20px;
+                color: white;
+            }
+
+            #input-message {
+                background-color: rgb(210, 210, 210);
+                border: none;
+                height: 25px;
+                width: 200px;
+                border-radius: 5px;
+                padding: 5px;
+            }
+
+            #btn:hover {
+                background-color: rgb(112, 112, 112);
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Let's Start !!</h1>
+        <input type="text" id="input-message" placeholder="Send message" />
+        <button id="btn">Send</button>
+        <div id="message"></div>
+
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script>
+            const socket = io();
+            const input_message = document.getElementById("input-message");
+            const btn = document.getElementById("btn");
+            const allMessage = document.getElementById("message");
+
+            socket.on("message", (message) => {
+                const p = document.createElement("p");
+                p.innerText = message;
+                allMessage.appendChild(p);
+            });
+
+            btn.onclick = (e) => {
+                const mes = input_message.value;
+                // console.log(mes);
+                socket.emit("user-message", mes);
+                input_message.value = "";
+            };
+        </script>
+    </body>
+</html>
